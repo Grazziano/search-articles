@@ -1,10 +1,8 @@
-const apiKey = process.env.REACT_APP_API_KEY;
-const url = 'https://api.core.ac.uk/v3/search/works/?apiKey=';
+import axios from 'axios';
 
-export const api = () => {
-  const data = fetch(url + apiKey)
-    .then((response) => response.json())
-    .then((data) => console.log(data.results))
-    .catch((error) => console.log(error.message));
-  return data;
-};
+// const url = 'https://api.core.ac.uk/v3/search/works/?apiKey=';
+const url = 'https://core.ac.uk:443/api-v2/search/';
+
+export const http = axios.create({
+  baseURL: `${url}`,
+});
