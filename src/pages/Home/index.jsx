@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FcSearch } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
 
@@ -11,6 +12,11 @@ function Home() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!query) {
+      toast.warn('Please enter a search term');
+      return;
+    }
 
     http
       .get(`${query}?page=1&pageSize=10&apiKey=${apiKey}`)
@@ -27,6 +33,7 @@ function Home() {
           type="text"
           onChange={({ target }) => setQuery(target.value)}
           placeholder="What are you looking for?"
+          required
         />
         <button type="submit">
           <FcSearch />
