@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { FcSearch } from 'react-icons/fc';
 import { http } from '../../services/api';
+import style from './Home.module.scss';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -19,22 +21,28 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className={style.home}>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={({ target }) => setQuery(target.value)} />
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          onChange={({ target }) => setQuery(target.value)}
+          placeholder="What are you looking for?"
+        />
+        <button type="submit">
+          <FcSearch />
+        </button>
       </form>
-      <section>
+      <section className={style.section}>
         {articles.length > 0 &&
           articles.map((article) => {
             return (
               <div key={article._source.id}>
-                <h2>{article._source.title}</h2>
+                <h2 className={style.articleTitle}>{article._source.title}</h2>
                 <p>{article._source.authors}</p>
                 <p>{article._source.type}</p>
                 <p>{article._source.description}</p>
                 {article._source.urls.map((link, index) => (
-                  <p key={index}>
+                  <p key={index} className={style.links}>
                     <a href={link} target="_blank" rel="noreferrer">
                       {link}
                     </a>
