@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FcSearch } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import Button from '../../components/Button';
@@ -7,12 +7,19 @@ import Loading from '../../components/Loading';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
 
+import favoriteImg from '../../assets/images/icons/favorite.png';
+import disfavorImg from '../../assets/images/icons/disfavor.png';
+
+import { loadFavorites, saveFavorites } from '../../helpers/localstorage';
+
 const apiKey = process.env.REACT_APP_API_KEY;
 
 function Home() {
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [favorites, setFavorites] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,6 +44,27 @@ function Home() {
     setQuery(childData);
   };
 
+  useEffect(() => {
+    if (loadFavorites('favoritesArticles')) {
+      const favoritesList = loadFavorites('favoritesArticles');
+      setFavorites(favoritesList);
+    }
+  }, []);
+
+  const handleFavorite = (id) => {
+    setFavorites([...favorites, id]);
+    saveFavorites('favoritesArticles', [...favorites, id]);
+  };
+
+  const handleDisfavor = (id) => {
+    const favoritesList = loadFavorites('favoritesArticles');
+    const removeFavorite = favoritesList.filter(
+      (idElement) => idElement !== id
+    );
+    setFavorites(removeFavorite);
+    saveFavorites('favoritesArticles', removeFavorite);
+  };
+
   return (
     <div className={style.home}>
       <form onSubmit={handleSubmit}>
@@ -58,6 +86,21 @@ function Home() {
             return (
               <div key={article._source.id}>
                 <h2 className={style.articleTitle}>{article._source.title}</h2>
+                <span>
+                  {favorites.includes(article._source.id) ? (
+                    <img
+                      src={favoriteImg}
+                      alt=""
+                      onClick={() => handleDisfavor(article._source.id)}
+                    />
+                  ) : (
+                    <img
+                      src={disfavorImg}
+                      alt=""
+                      onClick={() => handleFavorite(article._source.id)}
+                    />
+                  )}
+                </span>
                 <p>{article._source.authors}</p>
                 <p>{article._source.type}</p>
                 <p>{article._source.description}</p>

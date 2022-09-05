@@ -15,6 +15,15 @@
     flex-direction: column;
   }
 
+  span {
+    float: right;
+  }
+
+  span img {
+    width: 2rem;
+    cursor: pointer;
+  }
+
   .links a {
     text-decoration: none;
     transition: 1s;
