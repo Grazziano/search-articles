@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FcSearch } from 'react-icons/fc';
 import { toast } from 'react-toastify';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 import Loading from '../../components/Loading';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
@@ -31,20 +33,22 @@ function Home() {
       });
   };
 
-  // if (loading) return <Loading />;
+  const handleCallback = (childData) => {
+    setQuery(childData);
+  };
 
   return (
     <div className={style.home}>
       <form onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
-          onChange={({ target }) => setQuery(target.value)}
+          parentCallback={handleCallback}
           placeholder="What are you looking for?"
-          required
         />
-        <button type="submit">
+
+        <Button type="submit">
           <FcSearch />
-        </button>
+        </Button>
       </form>
       <section className={style.section}>
         {loading && <Loading />}
