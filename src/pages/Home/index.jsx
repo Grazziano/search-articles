@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FcSearch } from 'react-icons/fc';
 import { toast } from 'react-toastify';
+import Loading from '../../components/Loading';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
 
@@ -9,6 +10,7 @@ const apiKey = process.env.REACT_APP_API_KEY;
 function Home() {
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -18,13 +20,18 @@ function Home() {
       return;
     }
 
+    setLoading(true);
+
     http
       .get(`${query}?page=1&pageSize=10&apiKey=${apiKey}`)
       .then((response) => {
         console.log(response.data.data);
         setArticles(response.data.data);
+        setLoading(false);
       });
   };
+
+  // if (loading) return <Loading />;
 
   return (
     <div className={style.home}>
@@ -40,6 +47,8 @@ function Home() {
         </button>
       </form>
       <section className={style.section}>
+        {loading && <Loading />}
+
         {articles.length > 0 &&
           articles.map((article) => {
             return (
