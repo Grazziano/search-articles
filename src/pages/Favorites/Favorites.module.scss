@@ -1,0 +1,24 @@
+.favorites {
+  .articleTitle {
+    display: flex;
+    flex-direction: column;
+  }
+
+  span {
+    float: right;
+  }
+
+  span img {
+    width: 2rem;
+    cursor: pointer;
+  }
+
+  .links a {
+    text-decoration: none;
+    transition: 1s;
+  }
+
+  .links a:hover {
+    font-size: 18px;
+  }
+}

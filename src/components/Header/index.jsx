@@ -5,7 +5,9 @@ import style from './Header.module.scss';
 function Header() {
   return (
     <header className={style.header}>
-      <h1>Search Articles</h1>
+      <Link to="/">
+        <h1>Search Articles</h1>
+      </Link>
       <nav>
         <ul>
           <li>

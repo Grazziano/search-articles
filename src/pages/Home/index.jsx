@@ -11,6 +11,7 @@ import favoriteImg from '../../assets/images/icons/favorite.png';
 import disfavorImg from '../../assets/images/icons/disfavor.png';
 
 import { loadFavorites, saveFavorites } from '../../helpers/localstorage';
+import Header from '../../components/Header';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -32,7 +33,7 @@ function Home() {
     setLoading(true);
 
     http
-      .get(`${query}?page=1&pageSize=10&apiKey=${apiKey}`)
+      .get(`search/${query}?page=1&pageSize=10&apiKey=${apiKey}`)
       .then((response) => {
         console.log(response.data.data);
         setArticles(response.data.data);
@@ -51,72 +52,77 @@ function Home() {
     }
   }, []);
 
-  const handleFavorite = (id) => {
-    setFavorites([...favorites, id]);
-    saveFavorites('favoritesArticles', [...favorites, id]);
+  const handleFavorite = (data) => {
+    setFavorites([...favorites, data]);
+    saveFavorites('favoritesArticles', [...favorites, data]);
   };
 
   const handleDisfavor = (id) => {
     const favoritesList = loadFavorites('favoritesArticles');
-    const removeFavorite = favoritesList.filter(
-      (idElement) => idElement !== id
-    );
+    const removeFavorite = favoritesList.filter((element) => element.id !== id);
     setFavorites(removeFavorite);
     saveFavorites('favoritesArticles', removeFavorite);
   };
 
   return (
-    <div className={style.home}>
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          parentCallback={handleCallback}
-          placeholder="What are you looking for?"
-        />
+    <>
+      <Header />
+      <div className={style.home}>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            parentCallback={handleCallback}
+            placeholder="What are you looking for?"
+          />
 
-        <Button type="submit">
-          <FcSearch />
-        </Button>
-      </form>
-      <section className={style.section}>
-        {loading && <Loading />}
+          <Button type="submit">
+            <FcSearch />
+          </Button>
+        </form>
+        <section className={style.section}>
+          {loading && <Loading />}
 
-        {articles.length > 0 &&
-          articles.map((article) => {
-            return (
-              <div key={article._source.id}>
-                <h2 className={style.articleTitle}>{article._source.title}</h2>
-                <span>
-                  {favorites.includes(article._source.id) ? (
-                    <img
-                      src={favoriteImg}
-                      alt=""
-                      onClick={() => handleDisfavor(article._source.id)}
-                    />
-                  ) : (
-                    <img
-                      src={disfavorImg}
-                      alt=""
-                      onClick={() => handleFavorite(article._source.id)}
-                    />
-                  )}
-                </span>
-                <p>{article._source.authors}</p>
-                <p>{article._source.type}</p>
-                <p>{article._source.description}</p>
-                {article._source.urls.map((link, index) => (
-                  <p key={index} className={style.links}>
-                    <a href={link} target="_blank" rel="noreferrer">
-                      {link}
-                    </a>
-                  </p>
-                ))}
-                <hr />
-              </div>
-            );
-          })}
-      </section>
-    </div>
+          {articles.length > 0 &&
+            articles.map((article) => {
+              return (
+                <div key={article._source.id}>
+                  <h2 className={style.articleTitle}>
+                    {article._source.title}
+                  </h2>
+                  <span>
+                    {favorites.find(
+                      (element) => element.id === article._source.id
+                    ) ? (
+                      <img
+                        src={favoriteImg}
+                        alt=""
+                        onClick={() => handleDisfavor(article._source.id)}
+                      />
+                    ) : (
+                      <img
+                        src={disfavorImg}
+                        alt=""
+                        onClick={() => handleFavorite(article._source)}
+                      />
+                    )}
+                  </span>
+                  <p>{article._source.authors}</p>
+                  <p>{article._source.type}</p>
+                  <p>{article._source.description}</p>
+                  {article._source.urls.map((link, index) => (
+                    <p key={index} className={style.links}>
+                      <a href={link} target="_blank" rel="noreferrer">
+                        {link}
+                      </a>
+                    </p>
+                  ))}
+                  <hr />
+                </div>
+              );
+            })}
+        </section>
+      </div>
+    </>
   );
 }
 
