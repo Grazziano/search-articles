@@ -1,0 +1,33 @@
+.header {
+  background-color: #1c448e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    color: #fff;
+    margin-left: 3rem;
+  }
+
+  ul {
+    display: flex;
+    margin-right: 3rem;
+    list-style: none;
+
+    li {
+      margin-right: 1.5rem;
+
+      a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: 1s;
+      }
+
+      a:hover {
+        color: #ffe381;
+        border-bottom: 1px solid red;
+      }
+    }
+  }
+}
