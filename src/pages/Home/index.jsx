@@ -35,7 +35,6 @@ function Home() {
     http
       .get(`search/${query}?page=1&pageSize=10&apiKey=${apiKey}`)
       .then((response) => {
-        console.log(response.data.data);
         setArticles(response.data.data);
         setLoading(false);
       });
