@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Loading from '../../components/Loading';
+import Pagination from '../../components/Pagination';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
 
@@ -15,12 +16,16 @@ import Header from '../../components/Header';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
+const LIMIT = 10;
+
 function Home() {
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [favorites, setFavorites] = useState([]);
+
+  const [offset, setOffset] = useState(1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,7 +38,7 @@ function Home() {
     setLoading(true);
 
     http
-      .get(`search/${query}?page=1&pageSize=10&apiKey=${apiKey}`)
+      .get(`search/${query}?page=${offset}&pageSize=${LIMIT}&apiKey=${apiKey}`)
       .then((response) => {
         setArticles(response.data.data);
         setLoading(false);
@@ -119,6 +124,12 @@ function Home() {
                 </div>
               );
             })}
+          <Pagination
+            limit={LIMIT}
+            total={100}
+            offset={offset}
+            setOffset={setOffset}
+          />
         </section>
       </div>
     </>
