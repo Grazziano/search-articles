@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FcSearch } from 'react-icons/fc';
+import { FcNext, FcPrevious, FcSearch } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -21,6 +21,7 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   const [favorites, setFavorites] = useState([]);
+  const [offset, setOffset] = useState(1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,7 +34,7 @@ function Home() {
     setLoading(true);
 
     http
-      .get(`search/${query}?page=1&pageSize=10&apiKey=${apiKey}`)
+      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
       .then((response) => {
         setArticles(response.data.data);
         setLoading(false);
@@ -61,6 +62,37 @@ function Home() {
     const removeFavorite = favoritesList.filter((element) => element.id !== id);
     setFavorites(removeFavorite);
     saveFavorites('favoritesArticles', removeFavorite);
+  };
+
+  const paginatePrevious = () => {
+    setLoading(true);
+
+    if (offset === 1) {
+      return;
+    } else {
+      setOffset(offset - 1);
+    }
+
+    http
+      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
+      .then((response) => {
+        setArticles(response.data.data);
+        setLoading(false);
+        window.scroll(0, 0);
+      });
+  };
+
+  const paginateNext = () => {
+    setLoading(true);
+    setOffset(offset + 1);
+
+    http
+      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
+      .then((response) => {
+        setArticles(response.data.data);
+        setLoading(false);
+        window.scroll(0, 0);
+      });
   };
 
   return (
@@ -119,6 +151,17 @@ function Home() {
                 </div>
               );
             })}
+
+          {articles.length > 0 && (
+            <div>
+              <button type="button" onClick={paginatePrevious}>
+                <FcPrevious />
+              </button>
+              <button type="button" onClick={paginateNext}>
+                <FcNext />
+              </button>
+            </div>
+          )}
         </section>
       </div>
     </>
