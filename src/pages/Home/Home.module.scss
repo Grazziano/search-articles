@@ -13,6 +13,29 @@
   .articleTitle {
     display: flex;
     flex-direction: column;
+    color: #fff;
+    background-color: #3a8a9e;
+    border-radius: 0.8rem;
+    padding: 10px 0;
+  }
+
+  .card {
+    background-color: #ededed;
+    padding: 10px;
+    border-radius: 0.8rem;
+
+    .authors {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .type {
+      text-transform: inherit;
+    }
+
+    .description {
+      text-align: justify;
+    }
   }
 
   span {

@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import { loadFavorites, saveFavorites } from '../../helpers/localstorage';
 import style from './Favorites.module.scss';
 
-import { ReactComponent as Hearth } from '../../assets/images/icons/gray_hearth.svg';
+import { ReactComponent as Hearth } from '../../assets/images/icons/red_hearth.svg';
 
 function Favorites() {
   const [articles, setArticles] = useState([]);
@@ -30,22 +30,24 @@ function Favorites() {
             return (
               <div key={article.id}>
                 <h2 className={style.articleTitle}>{article.title}</h2>
-                <span>
-                  <Hearth
-                    onClick={() => handleDisfavor(article.id)}
-                    style={{ fill: 'red' }}
-                  />
-                </span>
-                <p>{article.authors}</p>
-                <p>{article.type}</p>
-                <p>{article.description}</p>
-                {article.urls.map((link, index) => (
-                  <p key={index} className={style.links}>
-                    <a href={link} target="_blank" rel="noreferrer">
-                      {link}
-                    </a>
-                  </p>
-                ))}
+                <div className={style.card}>
+                  <span>
+                    <Hearth
+                      onClick={() => handleDisfavor(article.id)}
+                      className={style.icon}
+                    />
+                  </span>
+                  <p>{article.authors}</p>
+                  <p>{article.type}</p>
+                  <p>{article.description}</p>
+                  {article.urls.map((link, index) => (
+                    <p key={index} className={style.links}>
+                      <a href={link} target="_blank" rel="noreferrer">
+                        {link}
+                      </a>
+                    </p>
+                  ))}
+                </div>
                 <hr />
               </div>
             );

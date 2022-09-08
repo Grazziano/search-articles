@@ -105,31 +105,37 @@ function Home() {
                   <h2 className={style.articleTitle}>
                     {article._source.title}
                   </h2>
-                  <span>
-                    {favorites.find(
-                      (element) => element.id === article._source.id
-                    ) ? (
-                      <RedHearth
-                        onClick={() => handleDisfavor(article._source)}
-                        className={style.icon}
-                      />
-                    ) : (
-                      <GrayHearth
-                        onClick={() => handleFavorite(article._source)}
-                        className={style.icon}
-                      />
-                    )}
-                  </span>
-                  <p>{article._source.authors}</p>
-                  <p>{article._source.type}</p>
-                  <p>{article._source.description}</p>
-                  {article._source.urls.map((link, index) => (
-                    <p key={index} className={style.links}>
-                      <a href={link} target="_blank" rel="noreferrer">
-                        {link}
-                      </a>
+                  <div className={style.card}>
+                    <span>
+                      {favorites.find(
+                        (element) => element.id === article._source.id
+                      ) ? (
+                        <RedHearth
+                          onClick={() => handleDisfavor(article._source)}
+                          className={style.icon}
+                        />
+                      ) : (
+                        <GrayHearth
+                          onClick={() => handleFavorite(article._source)}
+                          className={style.icon}
+                        />
+                      )}
+                    </span>
+                    <p className={style.authors}>
+                      Authors: {article._source.authors}
                     </p>
-                  ))}
+                    <p className={style.type}>{article._source.types}</p>
+                    <p className={style.description}>
+                      {article._source.description}
+                    </p>
+                    {article._source.urls.map((link, index) => (
+                      <p key={index} className={style.links}>
+                        <a href={link} target="_blank" rel="noreferrer">
+                          {link}
+                        </a>
+                      </p>
+                    ))}
+                  </div>
                   <hr />
                 </div>
               );
