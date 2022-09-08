@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import { loadFavorites, saveFavorites } from '../../helpers/localstorage';
 import style from './Favorites.module.scss';
 
-import favoriteImg from '../../assets/images/icons/favorite.png';
+import { ReactComponent as Hearth } from '../../assets/images/icons/gray_hearth.svg';
 
 function Favorites() {
   const [articles, setArticles] = useState([]);
@@ -31,10 +31,9 @@ function Favorites() {
               <div key={article.id}>
                 <h2 className={style.articleTitle}>{article.title}</h2>
                 <span>
-                  <img
-                    src={favoriteImg}
-                    alt=""
+                  <Hearth
                     onClick={() => handleDisfavor(article.id)}
+                    style={{ fill: 'red' }}
                   />
                 </span>
                 <p>{article.authors}</p>

@@ -7,8 +7,8 @@ import Loading from '../../components/Loading';
 import { http } from '../../services/api';
 import style from './Home.module.scss';
 
-import favoriteImg from '../../assets/images/icons/favorite.png';
-import disfavorImg from '../../assets/images/icons/disfavor.png';
+import { ReactComponent as GrayHearth } from '../../assets/images/icons/gray_hearth.svg';
+import { ReactComponent as RedHearth } from '../../assets/images/icons/red_hearth.svg';
 
 import { loadFavorites, saveFavorites } from '../../helpers/localstorage';
 import Header from '../../components/Header';
@@ -34,7 +34,7 @@ function Home() {
     setLoading(true);
 
     http
-      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
+      .get(`search/${query}?page=1&pageSize=10&apiKey=${apiKey}`)
       .then((response) => {
         setArticles(response.data.data);
         setLoading(false);
@@ -52,47 +52,30 @@ function Home() {
     }
   }, []);
 
+  /* eslint-disable */
+  useEffect(() => {
+    http
+      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
+      .then((response) => {
+        setArticles(response.data.data);
+        setLoading(false);
+        window.scroll(0, 0);
+      });
+  }, [offset]);
+  /* eslint-enable */
+
   const handleFavorite = (data) => {
     setFavorites([...favorites, data]);
     saveFavorites('favoritesArticles', [...favorites, data]);
   };
 
-  const handleDisfavor = (id) => {
+  const handleDisfavor = (data) => {
     const favoritesList = loadFavorites('favoritesArticles');
-    const removeFavorite = favoritesList.filter((element) => element.id !== id);
+    const removeFavorite = favoritesList.filter(
+      (element) => element.id !== data.id
+    );
     setFavorites(removeFavorite);
     saveFavorites('favoritesArticles', removeFavorite);
-  };
-
-  const paginatePrevious = () => {
-    setLoading(true);
-
-    if (offset === 1) {
-      return;
-    } else {
-      setOffset(offset - 1);
-    }
-
-    http
-      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
-      .then((response) => {
-        setArticles(response.data.data);
-        setLoading(false);
-        window.scroll(0, 0);
-      });
-  };
-
-  const paginateNext = () => {
-    setLoading(true);
-    setOffset(offset + 1);
-
-    http
-      .get(`search/${query}?page=${offset}&pageSize=10&apiKey=${apiKey}`)
-      .then((response) => {
-        setArticles(response.data.data);
-        setLoading(false);
-        window.scroll(0, 0);
-      });
   };
 
   return (
@@ -104,6 +87,7 @@ function Home() {
             type="text"
             parentCallback={handleCallback}
             placeholder="What are you looking for?"
+            className={style.button}
           />
 
           <Button type="submit">
@@ -113,7 +97,8 @@ function Home() {
         <section className={style.section}>
           {loading && <Loading />}
 
-          {articles.length > 0 &&
+          {articles &&
+            articles.length > 0 &&
             articles.map((article) => {
               return (
                 <div key={article._source.id}>
@@ -124,15 +109,11 @@ function Home() {
                     {favorites.find(
                       (element) => element.id === article._source.id
                     ) ? (
-                      <img
-                        src={favoriteImg}
-                        alt=""
-                        onClick={() => handleDisfavor(article._source.id)}
+                      <RedHearth
+                        onClick={() => handleDisfavor(article._source)}
                       />
                     ) : (
-                      <img
-                        src={disfavorImg}
-                        alt=""
+                      <GrayHearth
                         onClick={() => handleFavorite(article._source)}
                       />
                     )}
@@ -152,12 +133,12 @@ function Home() {
               );
             })}
 
-          {articles.length > 0 && (
+          {articles && articles.length > 0 && (
             <div>
-              <button type="button" onClick={paginatePrevious}>
+              <button type="button" onClick={() => setOffset(offset - 1)}>
                 <FcPrevious />
               </button>
-              <button type="button" onClick={paginateNext}>
+              <button type="button" onClick={() => setOffset(offset + 1)}>
                 <FcNext />
               </button>
             </div>
