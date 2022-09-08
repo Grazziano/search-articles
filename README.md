@@ -1,5 +1,7 @@
 # Search Articles
 
+![](app.png)
+
 O Search Articles é um site que lista artigos científicos através de requisições a uma api.
 
 ## 🔨 Funcionalidades do projeto
@@ -58,6 +60,12 @@ docker-compose down
 ### Projeto em produção
 
 Este projeto pode ser visualizado neste [link](https://search-articles.vercel.app/).
+
+### Testes
+
+```
+npm test
+```
 
 
 ## 📚 Mais informações
