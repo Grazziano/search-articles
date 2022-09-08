@@ -111,10 +111,12 @@ function Home() {
                     ) ? (
                       <RedHearth
                         onClick={() => handleDisfavor(article._source)}
+                        className={style.icon}
                       />
                     ) : (
                       <GrayHearth
                         onClick={() => handleFavorite(article._source)}
+                        className={style.icon}
                       />
                     )}
                   </span>
@@ -134,11 +136,20 @@ function Home() {
             })}
 
           {articles && articles.length > 0 && (
-            <div>
-              <button type="button" onClick={() => setOffset(offset - 1)}>
+            <div className={style.paginateDiv}>
+              <button
+                type="button"
+                onClick={() => setOffset(offset - 1)}
+                className={style.paginateButton}
+                disabled={offset === 1}
+              >
                 <FcPrevious />
               </button>
-              <button type="button" onClick={() => setOffset(offset + 1)}>
+              <button
+                type="button"
+                onClick={() => setOffset(offset + 1)}
+                className={style.paginateButton}
+              >
                 <FcNext />
               </button>
             </div>
