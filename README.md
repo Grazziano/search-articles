@@ -31,12 +31,34 @@ Lista de tecnologias que foram usadas nesse projeto:
 - `sass`
 - `css modules`
 - `React Icons`
+- `Docker`
 
 ## 🛠️ Abrir e rodar o projeto
+
+### Local
 
 Para abrir e rodar o projeto, execute npm i para instalar as dependências e npm start para iniciar o projeto.
 
 Depois, acesse <a href="http://localhost:3000/">http://localhost:3000/</a> no seu navegador.
+
+### Usando Docker
+
+Se tiver o docker-compose instalado no computador, após clonar o projeto basta rodar o comando abaixo para criar e iniciar os contêineres:
+
+```
+docker-compose up -d
+```
+
+Para paralisar e remover todos os contêineres use o comando:
+
+```
+docker-compose down
+```
+
+### Projeto em produção
+
+Este projeto pode ser visualizado neste [link](https://search-articles.vercel.app/).
+
 
 ## 📚 Mais informações
 
