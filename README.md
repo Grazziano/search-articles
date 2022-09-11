@@ -39,6 +39,8 @@ Lista de tecnologias que foram usadas nesse projeto:
 
 ### Local
 
+<strong>IMPORTANTE:</strong> Para o projeto funcionar é necessário renomear o arquivo <strong>.env.example</strong> para <strong>.env</strong>, e também será necessário adicionar a sua chave da api nesse mesmo arquivo. Caso não tenha a chave, pode solicitar uma nesse [link](https://core.ac.uk/services/api/).
+
 Para abrir e rodar o projeto, execute npm i para instalar as dependências e npm start para iniciar o projeto.
 
 Depois, acesse <a href="http://localhost:3000/">http://localhost:3000/</a> no seu navegador.
